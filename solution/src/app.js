@@ -17,19 +17,19 @@ import * as THREE from 'three';
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 const apiOptions = {
-  apiKey: 'YOUR API KEY',
+  apiKey: 'AIzaSyB76BGbcl1nh7ep7DmTvCJRifRgloO9CtA',
   version: "beta"
 };
 
 const mapOptions = {
   "tilt": 0,
   "heading": 0,
-  "zoom": 18,
-  "center": { lat: 35.6594945, lng: 139.6999859 },
-  "mapId": "YOUR MAP ID"    
+  "zoom": 19,
+  "center": { lat: 50.40285226424929, lng: 30.439668571188932 },
+  "mapId": "7393c25d7bb27463"
 }
 
-async function initMap() {    
+async function initMap() {
   const mapDiv = document.getElementById("map");
   const apiLoader = new Loader(apiOptions);
   await apiLoader.load();
@@ -53,12 +53,12 @@ function initWebGLOverlayView(map) {
   
     // load the model    
     loader = new GLTFLoader();               
-    const source = "pin.gltf";
+    const source = "sample_top.glb";
     loader.load(
       source,
       gltf => {      
-        gltf.scene.scale.set(25,25,25);
-        gltf.scene.rotation.x = 180 * Math.PI/180; // rotations are in radians
+        // gltf.scene.scale.set(25,25,25);
+        gltf.scene.rotation.x = 90 * Math.PI/180; // rotations are in radians
         scene.add(gltf.scene);           
       }
     );
@@ -100,15 +100,33 @@ function initWebGLOverlayView(map) {
     const latLngAltitudeLiteral = {
         lat: mapOptions.center.lat,
         lng: mapOptions.center.lng,
-        altitude: 120
+        altitude: 0
     }
 
     const matrix = transformer.fromLatLngAltitude(latLngAltitudeLiteral);
     camera.projectionMatrix = new THREE.Matrix4().fromArray(matrix);
     
     webGLOverlayView.requestRedraw();      
-    renderer.render(scene, camera);                  
+    renderer.render(scene, camera);
 
+    let canvas = document.getElementById("map");
+    canvas.addEventListener('mousemove', onMouseMove);
+    canvas.addEventListener('mousedown', detectLeftButtonDown);
+    canvas.addEventListener('mouseup', detectLeftButtonUp);
+
+    let click;
+    function detectLeftButtonDown(event) {
+      // console.log(scene);
+      return click = true;
+    }
+    function detectLeftButtonUp(event) {
+      return click = false;
+    }
+    function onMouseMove(event) {
+      if (click){
+        scene.rotation.z += event.movementX * 0.0001;
+      }
+    }
     // always reset the GL state
     renderer.resetState();
   }
