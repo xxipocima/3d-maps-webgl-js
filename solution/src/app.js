@@ -17,7 +17,7 @@ import * as THREE from 'three';
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 const apiOptions = {
-  apiKey: 'AIzaSyB76BGbcl1nh7ep7DmTvCJRifRgloO9CtA',
+  apiKey: '',
   version: "beta"
 };
 
@@ -26,7 +26,7 @@ const mapOptions = {
   "heading": 0,
   "zoom": 19,
   "center": { lat: 50.40285226424929, lng: 30.439668571188932 },
-  "mapId": "7393c25d7bb27463"
+  "mapId": ""
 }
 
 async function initMap() {
